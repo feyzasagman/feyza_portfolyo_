@@ -1,21 +1,27 @@
-/* Genel Sayfa Düzeni [cite: 1213-1215] */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
-  background-color: #121212; /* Koyu tema */
-  color: #e0e0e0;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  background: radial-gradient(circle at top left, #1f2937, #020617 55%);
+  color: #e5e7eb;
+  margin: 0;
+  padding: 0;
 }
 
-/* KLAVYE ODAK GÖSTERGESİ (Puan kriteri!) [cite: 969, 1226] */
+/* Genel yerleşim */
+.app-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+/* Klavye odak göstergesi */
 :focus {
   outline: 3px solid #3b82f6;
   outline-offset: 4px;
 }
 
-/* SKIP LINK: Sadece Tab tuşuna basınca görünür [cite: 1216-1224] */
+/* Skip link: sadece klavye ile gezinirken görünür */
 .skip-link {
   position: absolute;
   top: -100px;
@@ -28,67 +34,253 @@ body {
   font-weight: bold;
 }
 .skip-link:focus {
-  top: 0;
+  top: 12px;
+  left: 12px;
 }
 
-/* Navigasyon Menüsü */
-nav ul {
+/* Üst menü */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(30, 64, 175, 0.7));
+  border-radius: 999px;
+  margin-bottom: 28px;
+}
+
+.site-header nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(191, 219, 254, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  background: radial-gradient(circle at top left, #1d4ed8, #0f172a);
+}
+
+.site-header ul {
   display: flex;
   gap: 20px;
   list-style: none;
-  padding: 20px 0;
-  justify-content: center;
-  border-bottom: 1px solid #333;
+  margin: 0;
+  padding: 0;
 }
 
-nav a {
-  color: #60a5fa;
+.site-header a {
+  color: #bfdbfe;
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.95rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
 }
 
-/* Bölümler ve Yazılar */
-section {
-  padding: 40px 0;
-  border-bottom: 1px solid #222;
+.site-header a:hover {
+  background-color: rgba(15, 23, 42, 0.9);
+  color: #eff6ff;
+  transform: translateY(-1px);
 }
 
-h1 { color: #ffffff; font-size: 2.5rem; }
-h2 { color: #60a5fa; margin-bottom: 1rem; }
+/* Bölümler */
+main {
+  margin-top: 8px;
+}
 
-/* FORM STİLLERİ [cite: 1240-1258] */
+.section-card {
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 24px;
+  padding: 28px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(55, 65, 81, 0.9);
+}
+
+.hero-section {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+  align-items: center;
+  gap: 24px;
+}
+
+.hero-text h1 {
+  margin: 0 0 8px;
+  font-size: 2.3rem;
+  letter-spacing: 0.02em;
+  color: #e5e7eb;
+}
+
+.subtitle {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 0.98rem;
+}
+
+.hero-figure {
+  margin: 0;
+  text-align: center;
+}
+
+.hero-figure img {
+  border-radius: 999px;
+  border: 2px solid rgba(129, 140, 248, 0.9);
+  box-shadow: 0 14px 35px rgba(30, 64, 175, 0.7);
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.hero-figure figcaption {
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+h1 {
+  color: #ffffff;
+}
+
+h2 {
+  color: #bfdbfe;
+  margin: 0 0 0.75rem;
+  font-size: 1.3rem;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+  font-size: 1.05rem;
+  color: #e5e7eb;
+}
+
+.section-intro {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #9ca3af;
+  font-size: 0.95rem;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.project-card {
+  padding: 16px 14px;
+  background: radial-gradient(circle at top left, #111827, #020617);
+  border-radius: 16px;
+  border: 1px solid rgba(55, 65, 81, 0.9);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.8);
+  font-size: 0.96rem;
+  color: #d1d5db;
+}
+
+.project-card p {
+  margin: 0;
+}
+
+/* Form stilleri */
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
   text-align: left;
 }
 
-label {
+.form-group label {
   display: block;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
 }
 
-input, textarea {
+input,
+textarea {
   width: 100%;
-  padding: 12px;
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 6px;
-  color: white;
+  padding: 11px 12px;
+  background-color: #020617;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
 }
 
 button {
-  background-color: #2563eb;
-  color: white;
-  padding: 10px 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(to right, #2563eb, #4f46e5);
+  color: #f9fafb;
+  padding: 10px 22px;
   border: none;
-  border-radius: 6px;
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.6);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.75);
+  opacity: 0.97;
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.55);
 }
 
 .error-msg {
   color: #f87171;
   font-size: 0.85rem;
   margin-top: 5px;
+}
+
+footer {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Küçük ekranlar */
+@media (max-width: 640px) {
+  .app-container {
+    padding-inline: 16px;
+  }
+
+  .site-header {
+    border-radius: 18px;
+  }
+
+  .site-header nav {
+    padding-inline: 14px;
+  }
+
+  .site-header ul {
+    gap: 12px;
+  }
+
+  .hero-section {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-text h1 {
+    font-size: 1.9rem;
+  }
 }

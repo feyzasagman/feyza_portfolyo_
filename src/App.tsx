@@ -1,87 +1,121 @@
 function App() {
   return (
-    <>
-      {/* Klavye kullanıcıları için navigasyonu atlama bağlantısı [cite: 994-1000] */}
-      <a href="#main-content" className="skip-link">Ana icerige atla</a>
+    <div className="app-container">
+      <a href="#main-content" className="skip-link">
+        Ana içeriğe atla
+      </a>
 
-      <header>
-        <nav aria-label="Ana navigasyon"> {/* Erişilebilir navigasyon etiketi [cite: 981-982] */}
+      <header className="site-header">
+        <nav aria-label="Ana navigasyon">
+          <div className="logo">FZ</div>
           <ul>
-            <li><a href="#hakkimda">Hakkimda</a></li>
-            <li><a href="#projeler">Projeler</a></li>
-            <li><a href="#iletisim">Iletisim</a></li>
+            <li>
+              <a href="#hakkimda">Hakkımda</a>
+            </li>
+            <li>
+              <a href="#projeler">Projeler</a>
+            </li>
+            <li>
+              <a href="#iletisim">İletişim</a>
+            </li>
           </ul>
         </nav>
       </header>
 
-      <main id="main-content"> {/* Sayfada yalnızca bir tane olmalı [cite: 748, 818] */}
-        
-        <section id="hakkimda">
-          <h1>Feyza [Soyadın] - Portfolyo</h1> {/* H1 hiyerarşisi [cite: 857, 915] */}
-          <figure> {/* Görsel grubu [cite: 761-762] */}
-            <img 
-              src="https://via.placeholder.com/150" 
-              alt="Feyza'nin profil fotografi" /* Anlamlı alt metin [cite: 906, 917-918] */
+      <main id="main-content">
+        <section id="hakkimda" className="section-card hero-section">
+          <div className="hero-text">
+            <h1>Feyza [Soyadın]</h1>
+            <p className="subtitle">
+              Modern web teknolojileri ile kullanıcı odaklı deneyimler üreten bir yazılım geliştirici adayı.
+            </p>
+          </div>
+          <figure className="hero-figure">
+            <img
+              src="https://via.placeholder.com/160"
+              alt="Feyza'nın profil fotoğrafı"
             />
-            <figcaption>Feyza [Soyadın]</figcaption>
+            <figcaption>Frontend &amp; .NET ile ilgileniyorum.</figcaption>
           </figure>
-          <p>Modern web teknolojileri üzerine calisan bir yazilim gelistirici adayiyim.</p>
         </section>
 
-        <section id="projeler">
+        <section id="projeler" className="section-card">
           <h2>Projelerim</h2>
-          <article> {/* Bağımsız içerik bloğu [cite: 753-755] */}
-            <h3>Bungalov Rezervasyon Sistemi</h3>
-            <p>C# WinForms ve MSSQL kullanilarak gelistirilmis bir sistemdir.</p>
-          </article>
-          <article>
-            <h3>Web Lab Projesi</h3>
-            <p>React ve TypeScript ile semantik HTML yapisi kullanilarak hazirlandi.</p>
-          </article>
+          <div className="projects-grid">
+            <article className="project-card">
+              <h3>Bungalov Rezervasyon Sistemi</h3>
+              <p>
+                C# WinForms ve MSSQL kullanılarak geliştirilmiş, bungalov rezervasyon süreçlerini
+                kolaylaştıran masaüstü uygulaması.
+              </p>
+            </article>
+            <article className="project-card">
+              <h3>Web Lab Projesi</h3>
+              <p>
+                React ve TypeScript ile hazırlanmış, semantik HTML ve erişilebilirlik odaklı bir web
+                arayüzü çalışması.
+              </p>
+            </article>
+          </div>
         </section>
 
-        <section id="iletisim">
-          <h2>Iletisim</h2>
-          {/* noValidate: React için doğru yazım budur  */}
+        <section id="iletisim" className="section-card">
+          <h2>İletişim</h2>
+          <p className="section-intro">
+            Aşağıdaki formu doldurarak benimle iletişime geçebilirsiniz.
+          </p>
           <form action="#" method="POST" noValidate>
-            <fieldset> {/* İlişkili alanları gruplama [cite: 1043-1044] */}
-              <legend>Iletisim Formu</legend>
-              
+            <fieldset>
+              <legend>İletişim Formu</legend>
+
               <div className="form-group">
-                <label htmlFor="name">Ad Soyad: </label> {/* label ve htmlFor ilişkisi  */}
-                <input 
-                  type="text" 
-                  id="name" 
-                  name="name" 
-                  required 
-                  minLength={2} 
-                  aria-describedby="name-error" /* Hata mesajı bağlantısı [cite: 958-959] */
+                <label htmlFor="name">Ad Soyad</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  minLength={2}
+                  aria-describedby="name-error"
                 />
-                <small id="name-error" className="error-msg" role="alert"></small> {/* Erişilebilir uyarı [cite: 1170] */}
+                <small id="name-error" className="error-msg" role="alert"></small>
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">E-posta: </label>
-                <input type="email" id="email" name="email" required aria-describedby="email-error" />
+                <label htmlFor="email">E-posta</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  aria-describedby="email-error"
+                />
                 <small id="email-error" className="error-msg" role="alert"></small>
               </div>
 
               <div className="form-group">
-                <label htmlFor="message">Mesajiniz:</label>
-                <textarea id="message" name="message" rows={5} required minLength={10} aria-describedby="message-error"></textarea>
+                <label htmlFor="message">Mesajınız</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  required
+                  minLength={10}
+                  aria-describedby="message-error"
+                ></textarea>
                 <small id="message-error" className="error-msg" role="alert"></small>
               </div>
 
-              <button type="submit">Gonder</button>
+              <button type="submit">Gönder</button>
             </fieldset>
           </form>
         </section>
       </main>
 
       <footer>
-        <p>&copy; 2026 Feyza. Tum haklari saklidir.</p>
+        <p>&copy; 2026 Feyza. Tüm hakları saklıdır.</p>
       </footer>
-    </>
+    </div>
   );
 }
 
