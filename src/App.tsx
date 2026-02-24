@@ -1,7 +1,7 @@
 function App() {
   return (
     <>
-      {/* Klavye kullanıcıları için navigasyonu atlama bağlantısı [cite: 994-1000] */}
+      {/* Klavye kullanıcıları için navigasyonu atlama bağlantısı [cite: 994-1000, 1216] */}
       <a href="#main-content" className="skip-link">Ana icerige atla</a>
 
       <header>
@@ -14,50 +14,50 @@ function App() {
         </nav>
       </header>
 
-      <main id="main-content"> {/* Sayfada sadece bir kez bulunmalı [cite: 748, 818] */}
+      <main id="main-content"> {/* Sayfada yalnızca bir tane olmalı [cite: 748, 1006] */}
         
         <section id="hakkimda">
-          <h1>[Adiniz Soyadiniz] - Kisisel Portfolyo</h1> {/* Ana başlık [cite: 857] */}
-          <figure> {/* Görsel ve açıklama grubu [cite: 761-762, 920-926] */}
+          <h1>Feyza [Soyadın] - Portfolyo</h1> {/* Sayfanın ana başlığı [cite: 857] */}
+          <figure> {/* Görsel ve açıklama grubu [cite: 761, 920] */}
             <img 
               src="https://via.placeholder.com/150" 
-              alt="[Adiniz]'in vesikalik fotografi" /* Anlamlı alt metin [cite: 906, 917-918] */
+              alt="Feyza'nin profil fotografi" /* Anlamlı alt metin [cite: 906, 917] */
             />
-            <figcaption>[Adiniz Soyadiniz]</figcaption>
+            <figcaption>Feyza [Soyadın]</figcaption>
           </figure>
-          <p>Modern web teknolojileri üzerine calisan bir ogrenciyim.</p>
+          <p>Modern web teknolojileri üzerine calisan bir yazilim gelistirici adayiyim.</p>
         </section>
 
         <section id="projeler">
-          <h2>Projelerim</h2> {/* Hiyerarşik başlık [cite: 858] */}
-          <article> {/* Bağımsız içerik bloğu [cite: 753-755] */}
+          <h2>Projelerim</h2> {/* Ana bölüm başlığı [cite: 858] */}
+          <article> {/* Bağımsız içerik [cite: 753] */}
             <h3>Bungalov Rezervasyon Sistemi</h3> {/* Alt bölüm başlığı [cite: 859] */}
-            <p>C# WinForms ve MSSQL kullanilarak gelistirilmis bir masaustu uygulamasidir.</p>
+            <p>C# WinForms ve MSSQL kullanilarak gelistirilmis bir rezervasyon yonetim sistemidir.</p>
           </article>
           <article>
             <h3>Web Lab Projesi</h3>
-            <p>React ve TypeScript ile semantik HTML yapisi kullanilarak olusturuldu.</p>
+            <p>React ve TypeScript ile semantik HTML yapisi kullanilarak hazirlandi.</p>
           </article>
         </section>
 
         <section id="iletisim">
           <h2>Iletisim</h2>
-          {/* noValidate: Tarayıcı balonlarını kapatıp özel hata alanı kullanmak için [cite: 1167-1168] */}
+          {/* noValidate: Tarayıcı balonlarını kapatıp özel hata mesajı alanlarını kullanmak için [cite: 1167-1168] */}
           <form action="#" method="POST" noValidate>
-            <fieldset> {/* İlişkili alanları gruplama [cite: 1043-1044] */}
+            <fieldset> {/* İlişkili alanları gruplama [cite: 1043] */}
               <legend>Iletisim Formu</legend>
               
               <div className="form-group">
-                <label htmlFor="name">Ad Soyad: </label> {/* Label/Input ilişkisi [cite: 1050-1052] */}
+                <label htmlFor="name">Ad Soyad: </label> {/* label ve htmlFor ilişkisi [cite: 1050] */}
                 <input 
                   type="text" 
                   id="name" 
                   name="name" 
                   required 
                   minLength={2} 
-                  aria-describedby="name-error" /* Hata mesajıyla bağlama [cite: 958-959, 1099] */
+                  aria-describedby="name-error" /* Hata mesajıyla bağlantı [cite: 958, 1099] */
                 />
-                <small id="name-error" className="error-msg" role="alert"></small> {/* Dinamik uyarı [cite: 1101, 1170] */}
+                <small id="name-error" className="error-msg" role="alert"></small> {/* Erişilebilir uyarı [cite: 1101, 1170] */}
               </div>
 
               <div className="form-group">
@@ -92,7 +92,7 @@ function App() {
       </main>
 
       <footer>
-        <p>&copy; 2026 [Adiniz]. Tum haklari saklidir.</p> {/* Telif bilgisi [cite: 760, 814] */}
+        <p>&copy; 2026 Feyza. Tum haklari saklidir.</p> {/* Telif bilgisi [cite: 814] */}
       </footer>
     </>
   );
