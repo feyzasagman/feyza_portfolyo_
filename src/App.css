@@ -1,76 +1,71 @@
+/* 1. Renk Değişkenleri ve Temel Ayarlar */
+:root {
+  --primary: #3b82f6;
+  --bg-dark: #0f172a;
+  --card-bg: rgba(15, 23, 42, 0.95);
+  --border-color: rgba(55, 65, 81, 0.8);
+  --text-main: #e5e7eb;
+}
+
 body {
-  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Roboto",
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: "Segoe UI", system-ui, sans-serif;
   line-height: 1.6;
   background: radial-gradient(circle at top left, #1f2937, #020617 55%);
-  color: #e5e7eb;
+  color: var(--text-main);
   margin: 0;
   padding: 0;
 }
 
-/* Genel yerleşim */
+/* 2. Sayfayı Ortaya Hizalayan Kapsayıcı  */
 .app-container {
   max-width: 960px;
   margin: 0 auto;
   padding: 24px 20px 40px;
 }
 
-/* Klavye odak göstergesi */
+/* 3. Erişilebilirlik: Odak ve Skip Link [cite: 551-561] */
 :focus {
-  outline: 3px solid #3b82f6;
+  outline: 3px solid var(--primary);
   outline-offset: 4px;
 }
 
-/* Skip link: sadece klavye ile gezinirken görünür */
 .skip-link {
   position: absolute;
   top: -100px;
   left: 0;
-  background: #2563eb;
+  background: var(--primary);
   color: white;
   padding: 10px;
-  z-index: 100;
+  z-index: 1000;
   text-decoration: none;
   font-weight: bold;
 }
+
 .skip-link:focus {
   top: 12px;
   left: 12px;
 }
 
-/* Üst menü */
+/* 4. Header ve Navigasyon Tasarımı */
 .site-header {
   position: sticky;
-  top: 0;
-  z-index: 10;
+  top: 10px;
+  z-index: 100;
   backdrop-filter: blur(10px);
   background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(30, 64, 175, 0.7));
   border-radius: 999px;
   margin-bottom: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .site-header nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 10px 25px;
 }
 
-.logo {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  border: 1px solid rgba(191, 219, 254, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #e5e7eb;
-  background: radial-gradient(circle at top left, #1d4ed8, #0f172a);
-}
-
-.site-header ul {
+.nav-links {
   display: flex;
   gap: 20px;
   list-style: none;
@@ -78,209 +73,140 @@ body {
   padding: 0;
 }
 
-.site-header a {
+.nav-links a {
   color: #bfdbfe;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.95rem;
-  padding: 6px 10px;
-  border-radius: 999px;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+  transition: all 0.2s ease;
 }
 
-.site-header a:hover {
-  background-color: rgba(15, 23, 42, 0.9);
-  color: #eff6ff;
-  transform: translateY(-1px);
-}
+.nav-links a:hover { color: white; }
 
-/* Bölümler */
-main {
-  margin-top: 8px;
-}
-
+/* 5. Kart Tasarımları ve Hero Bölümü */
 .section-card {
-  background: rgba(15, 23, 42, 0.9);
+  background: var(--card-bg);
   border-radius: 24px;
-  padding: 28px 24px;
+  padding: 32px;
   margin-bottom: 24px;
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(55, 65, 81, 0.9);
-}
-
-.hero-section {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
-  align-items: center;
-  gap: 24px;
-}
-
-.hero-text h1 {
-  margin: 0 0 8px;
-  font-size: 2.3rem;
-  letter-spacing: 0.02em;
-  color: #e5e7eb;
-}
-
-.subtitle {
-  margin: 0;
-  color: #9ca3af;
-  font-size: 0.98rem;
-}
-
-.hero-figure {
-  margin: 0;
-  text-align: center;
-}
-
-.hero-figure img {
-  border-radius: 999px;
-  border: 2px solid rgba(129, 140, 248, 0.9);
-  box-shadow: 0 14px 35px rgba(30, 64, 175, 0.7);
-  display: block;
-  margin: 0 auto 10px;
-}
-
-.hero-figure figcaption {
-  font-size: 0.9rem;
-  color: #9ca3af;
-}
-
-h1 {
-  color: #ffffff;
-}
-
-h2 {
-  color: #bfdbfe;
-  margin: 0 0 0.75rem;
-  font-size: 1.3rem;
-}
-
-h3 {
-  margin-top: 0;
-  margin-bottom: 0.4rem;
-  font-size: 1.05rem;
-  color: #e5e7eb;
-}
-
-.section-intro {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: #9ca3af;
-  font-size: 0.95rem;
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-.project-card {
-  padding: 16px 14px;
-  background: radial-gradient(circle at top left, #111827, #020617);
-  border-radius: 16px;
-  border: 1px solid rgba(55, 65, 81, 0.9);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.8);
-  font-size: 0.96rem;
-  color: #d1d5db;
-}
-
-.project-card p {
-  margin: 0;
-}
-
-/* Form stilleri */
-.form-group {
-  margin-bottom: 1.2rem;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-color);
   text-align: left;
 }
 
-.form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  font-size: 0.95rem;
+/* Hero Düzeni: Resim ve yazıyı yan yana getirir */
+.hero-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
 }
 
-input,
-textarea {
+.hero-text { flex: 2; }
+.subtitle { color: var(--primary); font-weight: 600; margin-bottom: 12px; }
+
+/* Hobiler ve Biyografi */
+.hobby-container {
+  margin-top: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.hobby-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin-top: 12px;
+}
+
+.hobby-list li {
+  background: rgba(59, 130, 246, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #bfdbfe;
+}
+/* PROFİL FOTOĞRAFI: Kesin ve Düzgün Boyutlandırma */
+
+/* Fotoğrafın kapsayıcısı: Boyutunu sabitler ve hizalar */
+.hero-figure {
+  flex: 0 0 140px; /* Genişliği 140px'te dondur, ne uzasın ne kısalsın */
+  margin: 0;       /* Varsayılan boşlukları sıfırla */
+  text-align: center; /* Altındaki yazıyı ortala */
+}
+
+/* Fotoğrafın kendisi: Yuvarlak, çerçeveli ve gölgeli */
+.profile-img {
+  width: 140px !important;  /* Genişliği kesin olarak 140px yap */
+  height: 140px !important; /* Yüksekliği kesin olarak 140px yap */
+  object-fit: cover;        /* Resim kare değilse sünmesin, ortadan kesilsin */
+  border-radius: 50%;       /* Tam yuvarlak yap */
+  border: 4px solid var(--primary); /* Mavi çerçeve ekle */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Hafif bir gölge ver */
+  display: block;           /* Blok eleman gibi davran */
+  margin: 0 auto 10px;      /* Ortala ve altına 10px boşluk bırak */
+}
+
+/* Fotoğraf altındaki açıklama yazısı */
+figcaption {
+  font-size: 0.85rem;
+  color: var(--primary);
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+
+/* 6. Projeler Bölümü */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  padding: 24px;
+  background: rgba(2, 6, 23, 0.6);
+  border-radius: 16px;
+  border-left: 5px solid var(--primary);
+}
+
+/* 7. Form ve İletişim Bölümü [cite: 575-593] */
+.contact-form fieldset { border: none; padding: 0; margin: 0; }
+.form-group { margin-bottom: 1.5rem; }
+label { display: block; font-weight: 600; margin-bottom: 8px; }
+
+input, textarea {
   width: 100%;
-  padding: 11px 12px;
-  background-color: #020617;
+  padding: 12px;
+  background: #020617;
   border: 1px solid #1f2937;
   border-radius: 10px;
-  color: #e5e7eb;
-  font-size: 0.95rem;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  color: white;
+  box-sizing: border-box;
 }
 
-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background: linear-gradient(to right, #2563eb, #4f46e5);
-  color: #f9fafb;
-  padding: 10px 22px;
+.submit-btn {
+  background: linear-gradient(to right, var(--primary), #4f46e5);
+  color: white;
+  padding: 12px 30px;
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.6);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+  font-weight: bold;
+  width: 100%;
 }
 
-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.75);
-  opacity: 0.97;
-}
+.error-msg { color: #f87171; font-size: 0.85rem; margin-top: 5px; }
 
-button:active {
-  transform: translateY(0);
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.55);
-}
-
-.error-msg {
-  color: #f87171;
-  font-size: 0.85rem;
-  margin-top: 5px;
-}
-
-footer {
-  margin-top: 16px;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-/* Küçük ekranlar */
+/* 8. Mobil Uyumluluk */
 @media (max-width: 640px) {
-  .app-container {
-    padding-inline: 16px;
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
   }
-
-  .site-header {
-    border-radius: 18px;
-  }
-
-  .site-header nav {
-    padding-inline: 14px;
-  }
-
-  .site-header ul {
-    gap: 12px;
-  }
-
-  .hero-section {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .hero-text h1 {
-    font-size: 1.9rem;
+  .hobby-list {
+    grid-template-columns: 1fr;
   }
 }
