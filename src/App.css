@@ -1,212 +1,531 @@
-/* 1. Renk Değişkenleri ve Temel Ayarlar */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
 :root {
-  --primary: #3b82f6;
-  --bg-dark: #0f172a;
-  --card-bg: rgba(15, 23, 42, 0.95);
-  --border-color: rgba(55, 65, 81, 0.8);
-  --text-main: #e5e7eb;
+  --primary: #818cf8;
+  /* Indigo 400 */
+  --primary-glow: rgba(129, 140, 248, 0.4);
+  --secondary: #fb7185;
+  /* Rose 400 */
+  --accent: #c084fc;
+  /* Purple 400 */
+  --bg-deep: #030712;
+  /* Gray 950 */
+  --bg-surface: rgba(17, 24, 39, 0.7);
+  /* Gray 900 with alpha */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-main: #f3f4f6;
+  /* Gray 100 */
+  --text-muted: #9ca3af;
+  /* Gray 400 */
+  --glass-blur: blur(14px);
+  --shadow-premium: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  --font-heading: 'Outfit', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes meshGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: "Segoe UI", system-ui, sans-serif;
-  line-height: 1.6;
-  background: radial-gradient(circle at top left, #1f2937, #020617 55%);
+  font-family: var(--font-body);
+  background-color: var(--bg-deep);
   color: var(--text-main);
-  margin: 0;
-  padding: 0;
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
 }
 
-/* 2. Sayfayı Ortaya Hizalayan Kapsayıcı  */
+/* Moving Mesh Background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(129, 140, 248, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(251, 113, 133, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(192, 132, 252, 0.05) 0%, transparent 70%);
+  filter: blur(80px);
+}
+
 .app-container {
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 24px 20px 40px;
+  padding: 0 24px;
 }
 
-/* 3. Erişilebilirlik: Odak ve Skip Link [cite: 551-561] */
-:focus {
-  outline: 3px solid var(--primary);
-  outline-offset: 4px;
-}
-
+/* Skip Link */
 .skip-link {
   position: absolute;
   top: -100px;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background: var(--primary);
   color: white;
-  padding: 10px;
-  z-index: 1000;
+  padding: 12px 24px;
+  border-radius: 0 0 12px 12px;
   text-decoration: none;
-  font-weight: bold;
+  z-index: 9999;
+  transition: top 0.3s ease;
 }
 
 .skip-link:focus {
-  top: 12px;
-  left: 12px;
+  top: 0;
 }
 
-/* 4. Header ve Navigasyon Tasarımı */
+/* Header */
 .site-header {
   position: sticky;
-  top: 10px;
-  z-index: 100;
-  backdrop-filter: blur(10px);
-  background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(30, 64, 175, 0.7));
-  border-radius: 999px;
-  margin-bottom: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  top: 24px;
+  z-index: 1000;
+  margin-bottom: 60px;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .site-header nav {
+  background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  border-radius: 100px;
+  padding: 12px 32px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 10px 25px;
+  align-items: center;
+  box-shadow: var(--shadow-premium);
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
 }
 
 .nav-links {
   display: flex;
-  gap: 20px;
+  gap: 32px;
   list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 .nav-links a {
-  color: #bfdbfe;
+  color: var(--text-muted);
   text-decoration: none;
   font-weight: 500;
-  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+  position: relative;
 }
 
-.nav-links a:hover { color: white; }
+.nav-links a:hover {
+  color: var(--text-main);
+}
 
-/* 5. Kart Tasarımları ve Hero Bölümü */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* Section Cards */
 .section-card {
-  background: var(--card-bg);
-  border-radius: 24px;
-  padding: 32px;
-  margin-bottom: 24px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+  background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 32px;
   border: 1px solid var(--border-color);
-  text-align: left;
+  padding: 60px;
+  margin-bottom: 40px;
+  box-shadow: var(--shadow-premium);
+  animation: fadeIn 1s ease-out both;
 }
 
-/* Hero Düzeni: Resim ve yazıyı yan yana getirir */
+.section-card h2 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+/* Hero Section */
+.hero-section {
+  padding: 80px 60px;
+}
+
 .hero-content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 32px;
+  gap: 60px;
 }
 
-.hero-text { flex: 2; }
-.subtitle { color: var(--primary); font-weight: 600; margin-bottom: 12px; }
+.hero-text {
+  flex: 1;
+}
 
-/* Hobiler ve Biyografi */
-.hobby-container {
-  margin-top: 1.5rem;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 20px;
-  border-radius: 16px;
+.hero-text h1 {
+  font-family: var(--font-heading);
+  font-size: 4.5rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 16px;
+  letter-spacing: -2px;
+}
+
+.subtitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  background: linear-gradient(to right, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bio-description {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 600px;
+}
+
+.bio-description strong {
+  color: var(--text-main);
+}
+
+.hobbies {
+  margin-top: 40px;
+}
+
+.hobbies h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .hobby-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   list-style: none;
-  padding: 0;
-  margin-top: 12px;
 }
 
 .hobby-list li {
-  background: rgba(59, 130, 246, 0.1);
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  color: #bfdbfe;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  padding: 10px 20px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-/* PROFİL FOTOĞRAFI: Kesin ve Düzgün Boyutlandırma */
 
-/* Fotoğrafın kapsayıcısı: Boyutunu sabitler ve hizalar */
+.hobby-list li:hover {
+  background: rgba(129, 140, 248, 0.1);
+  border-color: var(--primary);
+  transform: translateY(-4px);
+}
+
 .hero-figure {
-  flex: 0 0 140px; /* Genişliği 140px'te dondur, ne uzasın ne kısalsın */
-  margin: 0;       /* Varsayılan boşlukları sıfırla */
-  text-align: center; /* Altındaki yazıyı ortala */
+  flex: 0 0 280px;
+  text-align: center;
 }
 
-/* Fotoğrafın kendisi: Yuvarlak, çerçeveli ve gölgeli */
+.profile-img-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin-bottom: 24px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.profile-img-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 40px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  z-index: -1;
+  opacity: 0.5;
+  filter: blur(15px);
+}
+
 .profile-img {
-  width: 140px !important;  /* Genişliği kesin olarak 140px yap */
-  height: 140px !important; /* Yüksekliği kesin olarak 140px yap */
-  object-fit: cover;        /* Resim kare değilse sünmesin, ortadan kesilsin */
-  border-radius: 50%;       /* Tam yuvarlak yap */
-  border: 4px solid var(--primary); /* Mavi çerçeve ekle */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Hafif bir gölge ver */
-  display: block;           /* Blok eleman gibi davran */
-  margin: 0 auto 10px;      /* Ortala ve altına 10px boşluk bırak */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 36px;
+  border: 2px solid var(--border-color);
 }
 
-/* Fotoğraf altındaki açıklama yazısı */
 figcaption {
-  font-size: 0.85rem;
-  color: var(--primary);
-  margin-top: 5px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
-
-/* 6. Projeler Bölümü */
+/* Projects Grid */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
 }
 
 .project-card {
-  padding: 24px;
-  background: rgba(2, 6, 23, 0.6);
-  border-radius: 16px;
-  border-left: 5px solid var(--primary);
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
 }
 
-/* 7. Form ve İletişim Bölümü [cite: 575-593] */
-.contact-form fieldset { border: none; padding: 0; margin: 0; }
-.form-group { margin-bottom: 1.5rem; }
-label { display: block; font-weight: 600; margin-bottom: 8px; }
+.project-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(129, 140, 248, 0.3);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
+}
 
-input, textarea {
+.project-icon {
+  font-size: 2.5rem;
+  background: rgba(129, 140, 248, 0.1);
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+}
+
+.project-info h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.project-info p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Contact Form */
+.contact-form {
+  max-width: 600px;
+}
+
+.contact-form fieldset {
+  border: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+
+.form-group input,
+.form-group textarea {
   width: 100%;
-  padding: 12px;
-  background: #020617;
-  border: 1px solid #1f2937;
-  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px 20px;
   color: white;
-  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(129, 140, 248, 0.05);
+  box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.1);
 }
 
 .submit-btn {
-  background: linear-gradient(to right, var(--primary), #4f46e5);
-  color: white;
-  padding: 12px 30px;
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: bold;
   width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.error-msg { color: #f87171; font-size: 0.85rem; margin-top: 5px; }
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -5px var(--primary-glow);
+}
 
-/* 8. Mobil Uyumluluk */
-@media (max-width: 640px) {
+.btn-glow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+  transition: 0.5s;
+}
+
+.submit-btn:hover .btn-glow {
+  left: 100%;
+}
+
+/* Footer */
+.site-footer {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Responsiveness */
+@media (max-width: 992px) {
   .hero-content {
-    flex-direction: column;
+    flex-direction: column-reverse;
     text-align: center;
+    gap: 40px;
   }
+
+  .hero-text h1 {
+    font-size: 3.5rem;
+  }
+
+  .bio-description {
+    margin: 0 auto;
+  }
+
   .hobby-list {
-    grid-template-columns: 1fr;
+    justify-content: center;
+  }
+
+  .section-card {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-text h1 {
+    font-size: 2.75rem;
+  }
+
+  .site-header nav {
+    padding: 10px 20px;
+  }
+
+  .nav-links {
+    gap: 16px;
+  }
+
+  .nav-links a {
+    font-size: 0.85rem;
+  }
+
+  .project-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 }
