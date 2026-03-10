@@ -1,128 +1,164 @@
-import './App.css';
+import { useState, useEffect } from 'react';
+import './App.css'; // Mevcut CSS'in durabilir, Tailwind üzerine eklenecektir
+import Button from './components/Button';
+import Card from './components/Card';
+import Input from './components/Input';
+import UIKit from './UIKit'; // UI Kit sayfasını görmek istersen
 
 function App() {
+  const [showUIKit, setShowUIKit] = useState(false);
+
+  const [darkMode, setDarkMode] = useState(true);
+
+  // Sync dark mode class on mount and change
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  if (showUIKit) {
+    return (
+      <div className="relative">
+        <div className="fixed top-4 left-4 right-4 z-[100] flex justify-center sm:justify-end sm:right-8">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setShowUIKit(false)}
+            className="shadow-xl backdrop-blur-md bg-opacity-80 border-white/10"
+          >
+            Portfolyoya Dön
+          </Button>
+        </div>
+        <UIKit />
+      </div>
+    );
+  }
+
   return (
     <div className="app-container">
       <a href="#main-content" className="skip-link">Ana içeriğe atla</a>
 
       <header className="site-header">
-        <nav aria-label="Ana navigasyon" className="container">
+        <nav aria-label="Ana navigasyon">
           <div className="logo">FZ</div>
           <ul className="nav-links">
             <li><a href="#hakkimda">Hakkımda</a></li>
             <li><a href="#projeler">Projeler</a></li>
             <li><a href="#iletisim">İletişim</a></li>
+            <li>
+              <Button variant="ghost" size="sm" onClick={toggleDarkMode}>
+                🌙/☀️
+              </Button>
+            </li>
+            <li>
+              <Button variant="primary" size="sm" onClick={() => setShowUIKit(true)}>
+                UI Kit
+              </Button>
+            </li>
           </ul>
         </nav>
       </header>
 
-      <main id="main-content" className="container">
+      <main id="main-content" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 py-12">
 
+        {/* --- HAKKIMDA (HERO) --- */}
         <section id="hakkimda" className="section-card hero-section">
           <div className="hero-content">
             <div className="hero-text">
-              <h1>Feyza Sağman</h1>
+              <h1 className="text-gray-900 dark:text-white">Feyza Sağman</h1>
               <p className="subtitle">Yazılım Mühendisi Adayı | 3. Sınıf</p>
-              <p className="bio-description">
-                <strong>Fırat Üniversitesi</strong> Yazılım Mühendisliği 3. sınıf öğrencisiyim.
+              <p className="bio-description leading-relaxed">
+                <strong>Fırat Üniversitesi</strong> Yazılım Mühendisliği öğrencisiyim.
                 Şu anda ağırlıklı olarak <strong>Veri Bilimi</strong> ve <strong>Yapay Zeka</strong> üzerine çalışmalarımı sürdürüyorum.
               </p>
-
               <div className="hobbies">
                 <h3>Hobilerim</h3>
                 <ul className="hobby-list">
-                  <li>🤖 Yapay Zeka Araştırmaları</li>
-                  <li>📊 Veri Görselleştirme</li>
-                  <li>📚 Teknik Okumalar</li>
-                  <li>🌱 Sürekli Öğrenme</li>
+                  <li>Yapay Zeka</li>
+                  <li>Robotik</li>
+                  <li>Fotoğrafçılık</li>
+                  <li>Okçuluk</li>
                 </ul>
+              </div>
+              <div className="flex gap-4 mt-8">
+                <Button variant="primary">CV İndir</Button>
+                <Button variant="secondary">Projelerime Git</Button>
               </div>
             </div>
 
             <figure className="hero-figure">
               <div className="profile-img-wrapper">
-                <img
-                  src="/feyza.jpg"
-                  alt="Feyza Sağman'ın profil fotoğrafı"
-                  className="profile-img"
-                />
+                <img src="/feyza.jpg" alt="Feyza Sağman" className="profile-img" />
               </div>
               <figcaption>Fırat Üniversitesi & Yazılım Mühendisliği</figcaption>
             </figure>
           </div>
         </section>
 
+        {/* --- PROJELER --- */}
         <section id="projeler" className="section-card">
           <h2>Projelerim</h2>
           <div className="projects-grid">
-            <article className="project-card">
-              <div className="project-icon">🏨</div>
-              <div className="project-info">
-                <h3>Bungalov Rezervasyon Sistemi</h3>
-                <p>C# WinForms ve MSSQL kullanılarak geliştirilmiş rezervasyon yönetim sistemi.</p>
+            <Card title="Bungalov Rezervasyon" variant="elevated" footer={<Button variant="ghost" size="sm">Detaylar →</Button>}>
+              <div className="project-card">
+                <div className="project-icon">🏠</div>
+                <div className="project-info">
+                  <p>C# WinForms ve MSSQL kullanılarak geliştirilmiş rezervasyon yönetim sistemi.</p>
+                </div>
               </div>
-            </article>
-            <article className="project-card">
-              <div className="project-icon">🌐</div>
-              <div className="project-info">
-                <h3>Web Lab Projesi</h3>
-                <p>React ve TypeScript ile hazırlanmış semantik HTML çalışması.</p>
+            </Card>
+            <Card title="Web Lab Projesi" variant="elevated" footer={<Button variant="ghost" size="sm">Detaylar →</Button>}>
+              <div className="project-card">
+                <div className="project-icon">🧪</div>
+                <div className="project-info">
+                  <p>React ve TypeScript ile hazırlanmış semantik HTML çalışması.</p>
+                </div>
               </div>
-            </article>
-            <article className="project-card">
-              <div className="project-icon">🛒</div>
-              <div className="project-info">
-                <h3>E-Ticaret Sitesi</h3>
-                <p>React ile yapılmış kapsamlı bir e-ticaret uygulaması.</p>
+            </Card>
+            <Card title="E-Ticaret Sitesi" variant="elevated" footer={<Button variant="ghost" size="sm">Detaylar →</Button>}>
+              <div className="project-card">
+                <div className="project-icon">🛒</div>
+                <div className="project-info">
+                  <p>React ile yapılmış kapsamlı bir e-ticaret uygulaması.</p>
+                </div>
               </div>
-            </article>
-            <article className="project-card">
-              <div className="project-icon">📝</div>
-              <div className="project-info">
-                <h3>Blog Uygulaması</h3>
-                <p>Markdown destekli modern blog sistemi.</p>
-              </div>
-            </article>
-            <article className="project-card">
-              <div className="project-icon">☁️</div>
-              <div className="project-info">
-                <h3>Hava Durumu</h3>
-                <p>API entegrasyonu ile gerçek zamanlı hava durumu uygulaması.</p>
-              </div>
-            </article>
+            </Card>
           </div>
         </section>
 
+        {/* --- İLETİŞİM --- */}
         <section id="iletisim" className="section-card">
-          <h2>İletişim</h2>
-          <form action="#" method="POST" noValidate className="contact-form">
-            <fieldset>
-              <legend className="sr-only">İletişim Formu</legend>
-
-              <div className="form-group">
-                <label htmlFor="name">Ad Soyad</label>
-                <input type="text" id="name" name="name" required minLength={2} placeholder="Adınızı girin" />
-                <small id="name-error" className="error-msg" role="alert"></small>
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-center mb-12">İletişim</h2>
+            <form className="contact-form space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Input id="name" label="Ad Soyad" placeholder="Adınızı girin" required />
+                <Input id="email" type="email" label="E-posta" placeholder="E-posta adresinizi girin" required />
               </div>
-
-              <div className="form-group">
-                <label htmlFor="email">E-posta</label>
-                <input type="email" id="email" name="email" required placeholder="E-posta adresinizi girin" />
-                <small id="email-error" className="error-msg" role="alert"></small>
+              <div className="form-group flex flex-col gap-2">
+                <label htmlFor="message" className="text-sm font-medium text-white">Mesajınız</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 bg-black/20 text-white focus:border-[#818cf8]/50 focus:ring-2 focus:ring-[#818cf8]/20 transition-all outline-none"
+                  placeholder="Mesajınızı buraya yazın..."
+                  required
+                ></textarea>
               </div>
-
-              <div className="form-group">
-                <label htmlFor="message">Mesajınız</label>
-                <textarea id="message" name="message" rows={5} required minLength={10} placeholder="Mesajınızı buraya yazın..."></textarea>
-                <small id="message-error" className="error-msg" role="alert"></small>
-              </div>
-
-              <button type="submit" className="submit-btn">
-                <span>Gönder</span>
-                <div className="btn-glow"></div>
-              </button>
-            </fieldset>
-          </form>
+              <Button variant="primary" className="submit-btn h-14">
+                Gönder
+                <span className="btn-glow"></span>
+              </Button>
+            </form>
+          </div>
         </section>
       </main>
 
