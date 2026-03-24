@@ -1,16 +1,26 @@
-import { useState, useEffect } from 'react';
-import './App.css'; // Mevcut CSS'in durabilir, Tailwind üzerine eklenecektir
+import { useEffect, useMemo, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import './App.css';
 import Button from './components/Button';
 import Card from './components/Card';
 import Input from './components/Input';
-import UIKit from './UIKit'; // UI Kit sayfasını görmek istersen
+import Alert from './components/Alert';
+import UIKit from './UIKit';
+import type { Category, SortField, SortOrder, Project } from './types/project';
+import { fetchProjects } from './services/projectService';
+import { applyFilters } from './utils/projectHelpers';
 
 function App() {
   const [showUIKit, setShowUIKit] = useState(false);
-
   const [darkMode, setDarkMode] = useState(true);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState<Category | 'all'>('all');
+  const [sortField, setSortField] = useState<SortField>('year');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Sync dark mode class on mount and change
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -18,6 +28,30 @@ function App() {
       document.documentElement.classList.remove('dark');
     }
   }, [darkMode]);
+
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchProjects();
+        setProjects(data);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Bilinmeyen bir hata oluştu.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProjects();
+  }, []);
+
+  const filteredProjects = useMemo(
+    () => applyFilters(projects, search, category, sortField, sortOrder),
+    [projects, search, category, sortField, sortOrder],
+  );
+
+  const categories: Array<Category | 'all'> = ['all', 'frontend', 'fullstack', 'backend'];
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -105,32 +139,97 @@ function App() {
         {/* --- PROJELER --- */}
         <section id="projeler" className="section-card">
           <h2>Projelerim</h2>
-          <div className="projects-grid">
-            <Card title="Bungalov Rezervasyon" variant="elevated" footer={<Button variant="ghost" size="sm">Detaylar →</Button>}>
-              <div className="project-card">
-                <div className="project-icon">🏠</div>
-                <div className="project-info">
-                  <p>C# WinForms ve MSSQL kullanılarak geliştirilmiş rezervasyon yönetim sistemi.</p>
-                </div>
-              </div>
-            </Card>
-            <Card title="Web Lab Projesi" variant="elevated" footer={<Button variant="ghost" size="sm">Detaylar →</Button>}>
-              <div className="project-card">
-                <div className="project-icon">🧪</div>
-                <div className="project-info">
-                  <p>React ve TypeScript ile hazırlanmış semantik HTML çalışması.</p>
-                </div>
-              </div>
-            </Card>
-            <Card title="E-Ticaret Sitesi" variant="elevated" footer={<Button variant="ghost" size="sm">Detaylar →</Button>}>
-              <div className="project-card">
-                <div className="project-icon">🛒</div>
-                <div className="project-info">
-                  <p>React ile yapılmış kapsamlı bir e-ticaret uygulaması.</p>
-                </div>
-              </div>
-            </Card>
+          <div className="project-controls">
+            <Input
+              id="search"
+              label="Proje ara"
+              value={search}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value)}
+              placeholder="Başlık, açıklama veya teknoloji..."
+            />
+            <div className="chip-group" role="group" aria-label="Kategori filtreleri">
+              {categories.map((cat) => (
+                <Button
+                  key={cat}
+                  variant={category === cat ? 'primary' : 'ghost'}
+                  size="sm"
+                  onClick={() => setCategory(cat)}
+                >
+                  {cat === 'all' ? 'Tümü' : cat}
+                </Button>
+              ))}
+            </div>
+            <div className="sort-row">
+              <label htmlFor="sortField">Sıralama</label>
+              <select
+                id="sortField"
+                value={sortField}
+                onChange={(event) => setSortField(event.target.value as SortField)}
+              >
+                <option value="year">Yıl</option>
+                <option value="title">Başlık</option>
+              </select>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))}
+              >
+                {sortOrder === 'asc' ? 'Artan' : 'Azalan'}
+              </Button>
+            </div>
           </div>
+
+          {error && (
+            <div className="mb-6">
+              <Alert variant="error" title="Veri Yükleme Hatası">
+                {error}
+              </Alert>
+            </div>
+          )}
+
+          {loading && <p className="status-text">Projeler yükleniyor...</p>}
+
+          {!loading && !error && filteredProjects.length === 0 && (
+            <p className="status-text">Filtreye uygun proje bulunamadı.</p>
+          )}
+
+          <div className="projects-grid">
+            {!loading &&
+              filteredProjects.map((project) => (
+                <Card
+                  key={project.id}
+                  title={project.title}
+                  image={project.image}
+                  imageAlt={`${project.title} proje görseli`}
+                  variant="elevated"
+                  footer={
+                    <div className="project-meta">
+                      <span>{project.year}</span>
+                      <span>{project.category}</span>
+                    </div>
+                  }
+                >
+                  <div className="project-card">
+                    <div className="project-info">
+                      <p>{project.description}</p>
+                      <div className="tech-list">
+                        {project.tech.map((tech) => (
+                          <span key={tech} className="tech-pill">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+          </div>
+
+          {!loading && !error && (
+            <p className="status-text">
+              {filteredProjects.length} / {projects.length} proje gösteriliyor
+            </p>
+          )}
         </section>
 
         {/* --- İLETİŞİM --- */}

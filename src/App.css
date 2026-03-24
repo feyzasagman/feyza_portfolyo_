@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #818cf8;
+  --color-secondary: #fb7185;
+  --color-accent: #c084fc;
+}
 
 :root {
   --primary: #818cf8;
@@ -140,18 +146,22 @@ body::before {
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border-color);
   border-radius: 100px;
-  padding: 12px 32px;
+  padding: 8px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: var(--shadow-premium);
+  width: min(95%, 1100px);
+  margin: 0 auto;
 }
+
 
 .logo {
   font-family: var(--font-heading);
   font-size: 1.75rem;
   font-weight: 800;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -1px;
@@ -161,6 +171,9 @@ body::before {
   display: flex;
   gap: 32px;
   list-style: none;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .nav-links a {
@@ -212,6 +225,7 @@ body::before {
   font-weight: 700;
   margin-bottom: 40px;
   background: linear-gradient(to right, #fff, #94a3b8);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
@@ -246,6 +260,7 @@ body::before {
   font-weight: 600;
   margin-bottom: 24px;
   background: linear-gradient(to right, var(--primary), var(--accent));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -340,6 +355,78 @@ figcaption {
   gap: 24px;
 }
 
+.project-controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sort-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sort-row label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.sort-row select {
+  min-width: 160px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.tech-pill {
+  font-size: 0.74rem;
+  line-height: 1;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 140, 248, 0.4);
+  background: rgba(129, 140, 248, 0.12);
+  color: #c7d2fe;
+}
+
+.project-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.project-meta span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+}
+
+.status-text {
+  margin: 4px 0 16px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
 .project-card {
   padding: 32px;
   background: rgba(255, 255, 255, 0.02);
@@ -380,6 +467,7 @@ figcaption {
   font-size: 0.95rem;
   color: var(--text-muted);
   line-height: 1.5;
+  word-wrap: break-word;
 }
 
 /* Contact Form */
@@ -411,7 +499,8 @@ figcaption {
   font-size: 0.95rem;
   font-weight: 500;
   margin-bottom: 10px;
-  color: var(--text-main);
+  color: #fff !important;
+  /* Always white for contrast */
 }
 
 .form-group input,
@@ -481,8 +570,37 @@ figcaption {
   border-top: 1px solid var(--border-color);
 }
 
-/* Responsiveness */
-@media (max-width: 992px) {
+
+/* --- UNIFIED RESPONSIVE SYSTEM --- */
+
+@media (max-width: 1024px) {
+  .site-header nav {
+    padding: 8px 24px;
+    width: 95%;
+  }
+
+  .hero-text h1 {
+    font-size: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header nav {
+    padding: 8px 16px;
+    border-radius: 24px;
+    top: 12px;
+  }
+
+  .nav-links {
+    gap: 16px;
+  }
+
+  .nav-links li:nth-child(2),
+  .nav-links li:nth-child(3) {
+    display: none;
+    /* Hide Hakkımda and Projeler on mobile/tablet to prevent overflow */
+  }
+
   .hero-content {
     flex-direction: column-reverse;
     text-align: center;
@@ -490,42 +608,69 @@ figcaption {
   }
 
   .hero-text h1 {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 
-  .bio-description {
-    margin: 0 auto;
-  }
-
-  .hobby-list {
-    justify-content: center;
+  .hero-figure {
+    flex: 0 0 auto;
   }
 
   .section-card {
-    padding: 40px;
+    padding: 40px 24px;
+    border-radius: 24px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 640px) {
-  .hero-text h1 {
-    font-size: 2.75rem;
-  }
-
-  .site-header nav {
-    padding: 10px 20px;
-  }
-
+@media (max-width: 480px) {
   .nav-links {
-    gap: 16px;
+    gap: 10px;
   }
 
   .nav-links a {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
-  .project-card {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  .logo {
+    font-size: 1.25rem;
   }
+
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .profile-img-wrapper {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+/* UI Kit Overrides */
+.uikit-container .max-w-5xl {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100%;
+}
+
+.uikit-container section {
+  width: 100%;
+}
+
+.uikit-container section>div.flex {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.uikit-container section h2 {
+  text-align: left;
+  width: 100%;
 }
