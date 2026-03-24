@@ -1,9 +1,29 @@
-// src/components/Card.tsx
-export default function Card({ title, children, image, imageAlt, footer, variant = "elevated" }: any) {
-  const variants: any = {
-    elevated: "bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl hover:bg-white/10 hover:border-white/20",
-    outlined: "bg-transparent border border-white/10 hover:border-white/20",
-    filled: "bg-white/10 backdrop-blur-sm",
+import type { ReactNode } from 'react';
+
+type CardVariant = 'elevated' | 'outlined' | 'filled';
+
+interface CardProps {
+  title?: string;
+  children?: ReactNode;
+  image?: string;
+  imageAlt?: string;
+  footer?: ReactNode;
+  variant?: CardVariant;
+}
+
+export default function Card({
+  title,
+  children,
+  image,
+  imageAlt,
+  footer,
+  variant = 'elevated',
+}: CardProps) {
+  const variants: Record<CardVariant, string> = {
+    elevated:
+      'bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl hover:bg-white/10 hover:border-white/20',
+    outlined: 'bg-transparent border border-white/10 hover:border-white/20',
+    filled: 'bg-white/10 backdrop-blur-sm',
   };
 
   return (

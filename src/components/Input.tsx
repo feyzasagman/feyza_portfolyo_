@@ -1,12 +1,20 @@
-// src/components/Input.tsx
+import type { InputHTMLAttributes } from 'react';
+
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+  helpText?: string;
+  id: string;
+}
+
 export default function Input({
   label,
-  type = "text",
+  type = 'text',
   error,
   helpText,
   id,
   ...props
-}: any) {
+}: InputProps) {
   return (
     <div className="space-y-1">
       {/* Etiket Bölümü */}
@@ -24,7 +32,7 @@ export default function Input({
           ${error
             ? "border-red-500/50 focus:ring-red-500/30"
             : "border-white/10 focus:border-[#818cf8]/50 focus:ring-[#818cf8]/20"} 
-          ${props.disabled ? "bg-white/5 cursor-not-allowed opacity-50" : "bg-black/20 text-white placeholder:text-gray-500"}`}
+          ${props.disabled ? 'bg-white/5 cursor-not-allowed opacity-50' : 'bg-black/20 text-white placeholder:text-gray-500'}`}
         aria-describedby={error ? `${id}-error` : helpText ? `${id}-help` : undefined}
         {...props}
       />
