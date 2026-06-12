@@ -1,6 +1,73 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import './App.css';
+import TetrisMini from './components/TetrisMini';
 import { profile } from './data/profile';
+
+function isInViewport(el: Element) {
+  const rect = el.getBoundingClientRect();
+  return rect.top < window.innerHeight * 0.92 && rect.bottom > 0;
+}
+
+function useScrollReveal(deps: unknown[] = []) {
+  useEffect(() => {
+    const elements = document.querySelectorAll('.reveal');
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReduced) {
+      elements.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -5% 0px' },
+    );
+
+    elements.forEach((el) => {
+      if (isInViewport(el)) {
+        el.classList.add('is-visible');
+        return;
+      }
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, deps);
+}
+
+function useActiveSection() {
+  const [activeSection, setActiveSection] = useState('hero');
+
+  useEffect(() => {
+    const sections = document.querySelectorAll<HTMLElement>('main section[id]');
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible[0]?.target.id) {
+          setActiveSection(visible[0].target.id);
+        }
+      },
+      { threshold: [0.2, 0.35, 0.5], rootMargin: '-20% 0px -55% 0px' },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  return activeSection;
+}
 
 type GitHubRepo = {
   id: number;
@@ -58,8 +125,16 @@ function App() {
     loadRepos();
   }, []);
 
+  const activeSection = useActiveSection();
+  useScrollReveal([loading, repos.length, showAllProjects]);
+
   return (
     <div className="app">
+      <div className="ambient-bg" aria-hidden="true">
+        <span className="ambient-orb ambient-orb--1" />
+        <span className="ambient-orb ambient-orb--2" />
+        <span className="ambient-orb ambient-orb--3" />
+      </div>
       <a href="#main-content" className="skip-link">
         Ana içeriğe atla
       </a>
@@ -72,7 +147,12 @@ function App() {
           <ul className="nav-links">
             {navItems.map((item) => (
               <li key={item.href}>
-                <a href={item.href}>{item.label}</a>
+                <a
+                  href={item.href}
+                  className={activeSection === item.href.slice(1) ? 'is-active' : undefined}
+                >
+                  {item.label}
+                </a>
               </li>
             ))}
           </ul>
@@ -82,6 +162,9 @@ function App() {
       <main id="main-content">
         <section id="hero" className="section hero" aria-labelledby="hero-heading">
           <div className="hero-card">
+            <div className="hero-tetris">
+              <TetrisMini />
+            </div>
             <div className="hero-content">
               <div className="hero-text">
                 <h1 id="hero-heading">{profile.name}</h1>
@@ -115,7 +198,7 @@ function App() {
               </div>
 
               <figure className="hero-figure">
-                <div className="profile-frame">
+                <div className="profile-frame profile-frame--float">
                   <img
                     src="/feyza.jpg"
                     alt={`${profile.name} profil fotoğrafı`}
@@ -130,7 +213,7 @@ function App() {
         </section>
 
         <section id="hakkimda" className="section" aria-labelledby="about-heading">
-          <div className="section-card">
+          <div className="section-card reveal">
             <h2 id="about-heading">Hakkımda</h2>
             <p className="section-text">{profile.about}</p>
             <div className="info-grid">
@@ -142,8 +225,12 @@ function App() {
                 <span className="info-card__label">Üniversite</span>
                 <span className="info-card__value">{profile.university}</span>
               </article>
-              {profile.focusAreas.map((area) => (
-                <article key={area} className="info-card info-card--accent">
+              {profile.focusAreas.map((area, index) => (
+                <article
+                  key={area}
+                  className="info-card info-card--accent stagger-item"
+                  style={{ '--stagger': index } as CSSProperties}
+                >
                   <span className="info-card__label">Odak Alanı</span>
                   <span className="info-card__value">{area}</span>
                 </article>
@@ -153,7 +240,7 @@ function App() {
         </section>
 
         <section id="yetenekler" className="section" aria-labelledby="skills-heading">
-          <div className="section-card">
+          <div className="section-card reveal">
             <h2 id="skills-heading">Yetenekler</h2>
             <p className="section-text">
               Teknik yeteneklerimi çalışma alanlarıma göre gruplandırdım.
@@ -162,8 +249,12 @@ function App() {
             <div className="featured-skills" aria-label="Öne çıkan alanlar">
               <h3 className="featured-skills__title">Öne Çıkan Alanlar</h3>
               <div className="featured-skills__list">
-                {profile.featuredSkills.map((skill) => (
-                  <span key={skill} className="featured-skill-card">
+                {profile.featuredSkills.map((skill, index) => (
+                  <span
+                    key={skill}
+                    className="featured-skill-card stagger-item"
+                    style={{ '--stagger': index } as CSSProperties}
+                  >
                     {skill}
                   </span>
                 ))}
@@ -171,8 +262,12 @@ function App() {
             </div>
 
             <div className="skills-grid">
-              {profile.skillCategories.map((category) => (
-                <article key={category.title} className="skill-category-card">
+              {profile.skillCategories.map((category, index) => (
+                <article
+                  key={category.title}
+                  className="skill-category-card stagger-item"
+                  style={{ '--stagger': index } as CSSProperties}
+                >
                   <div className="skill-category-header">
                     <h3>{category.title}</h3>
                   </div>
@@ -191,7 +286,7 @@ function App() {
         </section>
 
         <section id="projeler" className="section" aria-labelledby="projects-heading">
-          <div className="section-card">
+          <div className="section-card reveal">
             <h2 id="projects-heading">GitHub Projelerim</h2>
             <p className="section-text">
               GitHub hesabımdaki public projeler gerçek zamanlı olarak listelenir. İlk etapta 4
@@ -217,8 +312,12 @@ function App() {
 
             <div className="projects-grid">
               {!loading &&
-                visibleRepos.map((repo) => (
-                  <article key={repo.id} className="project-card">
+                visibleRepos.map((repo, index) => (
+                  <article
+                    key={repo.id}
+                    className="project-card stagger-item"
+                    style={{ '--stagger': index } as CSSProperties}
+                  >
                     <div className="project-card__accent" aria-hidden="true">
                       <span className="project-card__language">{repo.language ?? 'Diğer'}</span>
                     </div>
@@ -283,7 +382,7 @@ function App() {
         </section>
 
         <section id="deneyimler" className="section" aria-labelledby="experience-heading">
-          <div className="section-card">
+          <div className="section-card reveal">
             <h2 id="experience-heading">Deneyim ve Eğitim</h2>
             <p className="section-text section-note">
               Bu bölüm CV ve LinkedIn bilgilerime göre düzenlenmiştir.
@@ -291,8 +390,12 @@ function App() {
 
             <h3 className="subsection-title subsection-title--primary">Deneyimler</h3>
             <ol className="experience-timeline" aria-label="Deneyim listesi">
-              {profile.experiences.map((experience) => (
-                <li key={`${experience.company}-${experience.role}`} className="experience-item">
+              {profile.experiences.map((experience, index) => (
+                <li
+                  key={`${experience.company}-${experience.role}`}
+                  className="experience-item stagger-item"
+                  style={{ '--stagger': index } as CSSProperties}
+                >
                   <article className="experience-card">
                     <h4 className="experience-role-title">{experience.role}</h4>
                     <p className="experience-company-line">
@@ -353,7 +456,7 @@ function App() {
         </section>
 
         <section id="iletisim" className="section" aria-labelledby="contact-heading">
-          <div className="section-card contact-card">
+          <div className="section-card contact-card reveal">
             <h2 id="contact-heading">İletişim</h2>
             <p className="section-text">Benimle aşağıdaki kanallardan iletişime geçebilirsiniz.</p>
             <div className="contact-actions">
